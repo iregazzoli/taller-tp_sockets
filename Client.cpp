@@ -127,7 +127,7 @@ void Client::print_game_state(uint8_t player_state, uint16_t x, uint16_t y, uint
     std::cout << "Rounds? " << rounds << std::endl;
 }
 // for debugging
-void Client::print_buffer(const void *buf, size_t len) {  // Agregar el prefijo de la clase Client::
+void Client::print_buffer(const void *buf, size_t len) {
     const unsigned char *uchar_buf = static_cast<const unsigned char *>(buf);
     for (size_t i = 0; i < len; ++i) {
         printf("%02x ", uchar_buf[i]);
