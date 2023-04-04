@@ -11,8 +11,10 @@ Client::Client(const char *hostname, const char *servname) : socket(hostname, se
 void Client::shoot(int value) {
     char action_data[2] = {0x01, static_cast<char>(value)};
     bool was_closed = false;
+    // TODO: the method is for debugging remove later
     print_buffer(action_data, 2);
     socket.sendall(action_data, 2, &was_closed);
+    // TODO: debugging remove later
     std::cout << "Sent shooting action" << std::endl
               << std::flush;
 }
@@ -21,8 +23,10 @@ void Client::move(int direction_x, int direction_y) {
     // std::cout << "about to send moving action with: " << direction_x << " and " << direction_y << std::endl; works...
     char action_data[3] = {0x02, static_cast<char>(direction_x), static_cast<char>(direction_y)};
     bool was_closed = false;
+    // TODO: the method is for debugging remove later
     print_buffer(action_data, 3);
     socket.sendall(action_data, 3, &was_closed);
+    // TODO: debugging remove later
     std::cout << "Sent moving action" << std::endl
               << std::flush;
 }
@@ -30,6 +34,7 @@ void Client::move(int direction_x, int direction_y) {
 void Client::reload() {
     char action_data = 0x03;
     bool was_closed = false;
+    // TODO: the method is for debugging remove later
     print_buffer(&action_data, 1);
     socket.sendall(&action_data, 1, &was_closed);
 }
@@ -37,6 +42,7 @@ void Client::reload() {
 void Client::nop() {
     char action_data = 0x00;
     bool was_closed = false;
+    // TODO: the method is for debugging remove later
     print_buffer(&action_data, 1);
     socket.sendall(&action_data, 1, &was_closed);
 }
@@ -46,6 +52,7 @@ void Client::run(const std::string &actions_file) {
     bool was_closed = false;
     int bytes_received = socket.recvall(welcome_msg, sizeof(welcome_msg) - 1, &was_closed);
     welcome_msg[bytes_received] = '\0';
+    // TODO: debugging remove later
     std::cout << "Received welcome message: " << welcome_msg << std::endl;
 
     execute_actions_from_file(actions_file);
@@ -87,6 +94,8 @@ void Client::execute_actions_from_file(const std::string &filename) {
         uint8_t ack;
         socket.recvall(&ack, 1, &was_closed);
 
+        // TODO: debugging remove later, this whole ack is to check if the msg between server and client changes for some reason,
+        //  and it does you can check that the client doesn't receive 0x04
         if (ack != 0x04) {
             std::cerr << "Error: Received incorrect ACK: " << std::hex << static_cast<int>(ack) << std::endl;
             break;
@@ -126,7 +135,7 @@ void Client::print_game_state(uint8_t player_state, uint16_t x, uint16_t y, uint
     std::cout << "Position? " << x << " " << y << std::endl;
     std::cout << "Rounds? " << rounds << std::endl;
 }
-// for debugging
+// TODO: the method is for debugging remove later
 void Client::print_buffer(const void *buf, size_t len) {
     const unsigned char *uchar_buf = static_cast<const unsigned char *>(buf);
     for (size_t i = 0; i < len; ++i) {

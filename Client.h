@@ -22,6 +22,8 @@ class Client {
     void run(const std::string &actions_file);
     void execute_actions_from_file(const std::string &filename);
     void print_game_state(uint8_t player_state, uint16_t x, uint16_t y, uint16_t rounds);
+
+    // TODO: the method is for debugging remove later
     void print_buffer(const void *buf, size_t len);
 };
 

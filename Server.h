@@ -17,7 +17,7 @@ class Server {
     void move_soldier(int x, int y);
     void shoot();
     void reload();
-
+    // TODO: the method is for debugging remove later
     void print_buffer(const void* buf, size_t len);
 
     // Method to run the server's main loop
