@@ -1,36 +1,23 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -pedantic -std=c++11
-
-# Objetos
-OBJ = Socket.o Client.o Server.o Game.o
-HEADERS = Socket.h Client.h Server.h Game.h
+CXXFLAGS = -std=c++17 -ggdb -O0 -pedantic -Wall -D _POSIX_C_SOURCE=200809L
 
 # Ejecutables
 all: client server
 
-client: client_main.o $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+client: client_main.o Socket.o Client.o Server.o Game.o
+	$(CXX) $(CXXFLAGS) client_main.o Socket.o Client.o Server.o Game.o -o client
 
-server: server_main.o $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+server: server_main.o Socket.o Client.o Server.o Game.o
+	$(CXX) $(CXXFLAGS) server_main.o Socket.o Client.o Server.o Game.o -o server
 
 # Reglas para objetos
-Socket.o: Socket.cpp Socket.h
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Client.o: Client.cpp Client.h Socket.h
+client_main.o: client_main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Server.o: Server.cpp Server.h Socket.h Game.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-Game.o: Game.cpp Game.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-client_main.o: client_main.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-server_main.o: server_main.cpp $(HEADERS)
+server_main.o: server_main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Limpieza

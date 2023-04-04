@@ -1,7 +1,9 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "Socket.h"
+#include <string>
+
+#include "socket.h"
 
 class Client {
    private:

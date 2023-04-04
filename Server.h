@@ -2,7 +2,7 @@
 #define SERVER_H
 
 #include "Game.h"
-#include "Socket.h"
+#include "socket.h"
 
 class Server {
    private:

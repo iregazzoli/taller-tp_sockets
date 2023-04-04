@@ -8,6 +8,9 @@
 #include <cstring>
 #include <stdexcept>
 
+// TODO: for debbuging
+#include <iostream>
+
 Socket::Socket(int skt) : skt(skt), closed(false) {}
 
 // Métodos privados para reemplazar la funcionalidad de Resolver
@@ -25,6 +28,8 @@ addrinfo *Socket::resolve_address(const char *hostname, const char *servname, in
     if (s != 0) {
         throw std::runtime_error("getaddrinfo failed: " + std::string(gai_strerror(s)));
     }
+    // TODO: debbuging
+    std::cout << "getaddrinfo: " << hostname << ", " << servname << std::endl;
 
     return result;
 }
@@ -53,11 +58,15 @@ Socket::Socket(const char *hostname, const char *servname) {
         if (skt == -1) {
             continue;
         }
+        // TODO: debbuging
+        std::cout << "socket created: " << skt << std::endl;
 
         s = connect(skt, addr->ai_addr, addr->ai_addrlen);
         if (s == -1) {
             continue;
         }
+        // TODO: debbuging
+        std::cout << "connection successful" << std::endl;
 
         this->closed = false;
         this->skt = skt;
@@ -99,6 +108,9 @@ Socket::Socket(const char *servname) {
             continue;
         }
 
+        // TODO: debbuging
+        std::cout << "listening on socket: " << skt << std::endl;
+
         this->closed = false;
         this->skt = skt;
         break;
@@ -138,6 +150,8 @@ int Socket::sendall(const void *data, unsigned int sz, bool *was_closed) {
             *was_closed = true;
             return sent;
         }
+        // TODO: debbuging
+        std::cout << "sent: " << s << " bytes" << std::endl;
         sent += s;
     }
 
@@ -157,6 +171,8 @@ int Socket::recvall(void *data, unsigned int sz, bool *was_closed) {
             *was_closed = true;
             return received;
         }
+        // TODO: debbuging
+        std::cout << "received: " << s << " bytes" << std::endl;
         received += s;
     }
 
@@ -169,6 +185,8 @@ Socket Socket::accept() {
     if (new_skt == -1) {
         throw std::runtime_error("accept failed: " + std::string(strerror(errno)));
     }
+    // TODO: debbuging
+    std::cout << "accepted connection: " << new_skt << std::endl;
     return Socket(new_skt);
 }
 
